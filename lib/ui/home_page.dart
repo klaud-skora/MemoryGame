@@ -12,10 +12,11 @@ class HomePageState extends State<HomePage> {
   
   @override
   Widget build(BuildContext context) {
+    var background = Color(0xff636363);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Memory Game'),
-        backgroundColor: Color(0xff2C5364),
+        backgroundColor: background
       ),
       body: Container(
         child: Center(
@@ -23,7 +24,7 @@ class HomePageState extends State<HomePage> {
             padding: const EdgeInsets.all(15.0),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
-              color: Color(0xff2C5364),            
+              color: background,            
             ),
             child: FlatButton(
               onPressed: () {
