@@ -12,21 +12,32 @@ class HomePageState extends State<HomePage> {
   
   @override
   Widget build(BuildContext context) {
-    var background = Color(0xff636363);
+    var background = Color(0xff222f3e);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Memory Game'),
+        title: const Text('MemoryCards Game'),
         backgroundColor: background
       ),
       body: Container(
-        child: Center(
-          child: Container(
-            padding: const EdgeInsets.all(15.0),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-              color: background,            
+        alignment: Alignment(0.0,0.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            Container(
+              child: Text(
+                'How good you think your memory is ?',
+                style: TextStyle(
+                  color: Color(0xff01a3a4),
+                  fontSize: 20.0,
+                ),
+              ),
             ),
-            child: FlatButton(
+            FlatButton(
+              shape: RoundedRectangleBorder(side: BorderSide(
+                color: Color(0xff222f3e),
+                width: 1,
+                style: BorderStyle.solid
+              ), borderRadius: BorderRadius.circular(50)),
               onPressed: () {
                 Navigator.push(
                   context, 
@@ -36,14 +47,14 @@ class HomePageState extends State<HomePage> {
                 );
               },
               child: Text(
-              'Let\'s play!',
-               style: TextStyle(
-                 fontSize: 20,
-                 color: Colors.white,
-               ),
-            ), 
+                'Let\'s play!',
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Color(0xff222f3e),
+                ),
+              ), 
             ),
-          )
+          ],
         ),
       ),
     );
