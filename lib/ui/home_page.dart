@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../logic/comparer.dart';
 
 import 'game.dart';
 
@@ -12,6 +13,7 @@ class HomePageState extends State<HomePage> {
   
   @override
   Widget build(BuildContext context) {
+    Comparer comparer = Comparer();
     var background = Color(0xff222f3e);
     return Scaffold(
       appBar: AppBar(
@@ -39,10 +41,11 @@ class HomePageState extends State<HomePage> {
                 style: BorderStyle.solid
               ), borderRadius: BorderRadius.circular(50)),
               onPressed: () {
+                comparer.createSignsArray();
                 Navigator.push(
                   context, 
                   MaterialPageRoute(
-                    builder: (BuildContext context)  => Game(),
+                    builder: (BuildContext context)  => Game(comparer),
                   )
                 );
               },

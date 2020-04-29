@@ -1,4 +1,3 @@
-  
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 
@@ -6,13 +5,12 @@ import '../logic/comparer.dart';
 
 class Game extends StatefulWidget {
 
-  const Game({Key key}) : super(key: key);
+  final Comparer comparer;
+  Game(this.comparer, {Key key}) : super(key: key);
   
   @override
   GameState createState() => GameState();
-   
 }
-
 
 class GameState extends State<Game> {
 
@@ -54,27 +52,18 @@ class GameState extends State<Game> {
     GlobalKey<FlipCardState>(),
     GlobalKey<FlipCardState>(),
   ];
-  
-  List<bool> cardFlips = [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true];
-  static List<String> signs = ['A', 'A', 'B', 'B', 'C', 'C', 'D', 'D', 'E', 'E', 'F', 'F', 'G', 'G', 'H', 'H', 'I', 'I', 'J', 'J', 'K', 'K', 'L', 'L', 'M', 'M', 'X', 'X', 'O', 'O', 'V', 'V', 'W', 'W', 'S', 'S'];    
-
-  int counter = 0;
+ 
   bool flip = false;
-  int card = -1;
   int pairs = 18;
 
-  String firstCard = '';
-  String secondCard = '';
-
   @override
-  void initState() {
-    super.initState();
-    signs.shuffle();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    Comparer comparer = new Comparer();
+  Widget build(BuildContext context) { 
+    // int toggle = -1;
+    // int toggle = widget.comparer.toggle();
+    // print(toggle);
+    // toggle != -1 ? cardKey[toggle].currentState.toggleCard() : print(widget.comparer.toggle());
+    // if(cardKey[widget.comparer.toggle()].currentState.toggleCard(); 
+    // if(toggle != -1) cardKey[toggle].currentState.toggleCard();
     
     return Scaffold(
       body: SafeArea(
@@ -96,52 +85,43 @@ class GameState extends State<Game> {
                   ),
                   itemBuilder: (context, index) => FlipCard(
                     key: cardKey[index],
-                    flipOnTouch: cardFlips[index],
+                    flipOnTouch: widget.comparer.cardFlips[index],
                     onFlip: () {
                       if(!flip) {
-                        flip = true; 
-                        card = index;
+                        flip = true;
+                        setState(() {
+                          widget.comparer.setCard(Cards.first, index);
+                          widget.comparer.setCard(Cards.second, index);
+                          // widget.comparer.compare();
+                        }); 
                       } else { 
-                        flip = false; 
-                        bool matched = comparer.isEqual(signs[card], signs[index]);
-                        if (matched && card == index) {
-                          setState(() { cardFlips[card] = false; });
-                        } else if (matched) {
-                          setState(() {
-                            cardFlips[card] = false;
-                            cardFlips[index] = false;
-                            pairs--;
-                          });
-                        } else {
-                          setState(() {
-                            cardFlips[card] = true;
-                          });
-                          cardKey[card].currentState.toggleCard();
-                          card = index;
-                          setState(() {
-                            cardFlips[card] = false;
-                          });
-                        }
+                        setState(() {
+                          flip = false;
+                          widget.comparer.setCard(Cards.second, index);
+                          widget.comparer.compare();
+                        });                   
                       }
+                      if(!widget.comparer.isEqual()) cardKey[widget.comparer.firstIndex].currentState.toggleCard();
+                      widget.comparer.setCard(Cards.first, index);  
                     },
-                    front: Container(
+                    back: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(3.0)),
                         color: Color(0xff222f3e),
                       ),
                       margin: EdgeInsets.all(3.0),  
                     ),
-                    back: Container(
+                    front: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(3.0)),
                         border: Border.all(color: Color(0xff01a3a4)),
                         color: Color(0xff222f3e).withOpacity(.2),
                       ),
                       margin: EdgeInsets.all(3.0),
-                      child: Center(child: Text(signs[index], style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600, color: Color(0xff01a3a4) ))),
+                      child: Center(child: Text(widget.comparer.signs[index], style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600, color: Color(0xff01a3a4) ))),
                     ),
                   ),
-                  itemCount: signs.length,
+                  itemCount: widget.comparer.signs.length,
                 ),
               ),
             ],
