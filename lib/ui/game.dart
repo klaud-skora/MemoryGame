@@ -14,57 +14,16 @@ class Game extends StatefulWidget {
 
 class GameState extends State<Game> {
 
-  List<GlobalKey<FlipCardState>> cardKey = [
-    GlobalKey<FlipCardState>(),
-    GlobalKey<FlipCardState>(),
-    GlobalKey<FlipCardState>(),
-    GlobalKey<FlipCardState>(),
-    GlobalKey<FlipCardState>(),
-    GlobalKey<FlipCardState>(),
-    GlobalKey<FlipCardState>(),
-    GlobalKey<FlipCardState>(),
-    GlobalKey<FlipCardState>(),
-    GlobalKey<FlipCardState>(),
-    GlobalKey<FlipCardState>(),
-    GlobalKey<FlipCardState>(),
-    GlobalKey<FlipCardState>(),
-    GlobalKey<FlipCardState>(),
-    GlobalKey<FlipCardState>(),
-    GlobalKey<FlipCardState>(),
-    GlobalKey<FlipCardState>(),
-    GlobalKey<FlipCardState>(),
-    GlobalKey<FlipCardState>(),
-    GlobalKey<FlipCardState>(),
-    GlobalKey<FlipCardState>(),
-    GlobalKey<FlipCardState>(),
-    GlobalKey<FlipCardState>(),
-    GlobalKey<FlipCardState>(),
-    GlobalKey<FlipCardState>(),
-    GlobalKey<FlipCardState>(),
-    GlobalKey<FlipCardState>(),
-    GlobalKey<FlipCardState>(),
-    GlobalKey<FlipCardState>(),
-    GlobalKey<FlipCardState>(),
-    GlobalKey<FlipCardState>(),
-    GlobalKey<FlipCardState>(),
-    GlobalKey<FlipCardState>(),
-    GlobalKey<FlipCardState>(),
-    GlobalKey<FlipCardState>(),
-    GlobalKey<FlipCardState>(),
-  ];
+  List<GlobalKey<FlipCardState>> cardKey = [];
  
   bool flip = false;
   int pairs = 18;
 
   @override
   Widget build(BuildContext context) { 
-    // int toggle = -1;
-    // int toggle = widget.comparer.toggle();
-    // print(toggle);
-    // toggle != -1 ? cardKey[toggle].currentState.toggleCard() : print(widget.comparer.toggle());
-    // if(cardKey[widget.comparer.toggle()].currentState.toggleCard(); 
-    // if(toggle != -1) cardKey[toggle].currentState.toggleCard();
-    
+    for(int i = 0; i < widget.comparer.signs.length; i++) {
+      cardKey.add(GlobalKey<FlipCardState>());
+    }
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
