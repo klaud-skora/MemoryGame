@@ -15,6 +15,7 @@ class HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     Comparer comparer = Comparer();
     var background = Color(0xff222f3e);
+    var mainColor = Color(0xff01a3a4);
     return Scaffold(
       appBar: AppBar(
         title: const Text('MemoryCards Game'),
@@ -29,14 +30,14 @@ class HomePageState extends State<HomePage> {
               child: Text(
                 'How good you think your memory is ?',
                 style: TextStyle(
-                  color: Color(0xff01a3a4),
+                  color: mainColor,
                   fontSize: 20.0,
                 ),
               ),
             ),
             FlatButton(
               shape: RoundedRectangleBorder(side: BorderSide(
-                color: Color(0xff222f3e),
+                color: background,
                 width: 1,
                 style: BorderStyle.solid
               ), borderRadius: BorderRadius.circular(50)),
@@ -45,7 +46,7 @@ class HomePageState extends State<HomePage> {
                 Navigator.push(
                   context, 
                   MaterialPageRoute(
-                    builder: (BuildContext context)  => Game(comparer),
+                    builder: (BuildContext context)  => Game(comparer, mainColor, background),
                   )
                 );
               },
@@ -53,7 +54,7 @@ class HomePageState extends State<HomePage> {
                 'Let\'s play!',
                 style: TextStyle(
                   fontSize: 20,
-                  color: Color(0xff222f3e),
+                  color: background,
                 ),
               ), 
             ),

@@ -6,7 +6,9 @@ import '../logic/comparer.dart';
 class Game extends StatefulWidget {
 
   final Comparer comparer;
-  Game(this.comparer, {Key key}) : super(key: key);
+  final Color mainColor;
+  final Color background;
+  Game(this.comparer, this.mainColor, this.background, {Key key}) : super(key: key);
   
   @override
   GameState createState() => GameState();
@@ -15,12 +17,11 @@ class Game extends StatefulWidget {
 class GameState extends State<Game> {
 
   List<GlobalKey<FlipCardState>> cardKey = [];
- 
   bool flip = false;
-  int pairs = 18;
 
   @override
   Widget build(BuildContext context) { 
+    int pairs = widget.comparer.pairs;
     for(int i = 0; i < widget.comparer.signs.length; i++) {
       cardKey.add(GlobalKey<FlipCardState>());
     }
@@ -32,7 +33,7 @@ class GameState extends State<Game> {
               Container(
                 height: 200.0,
                 padding: EdgeInsets.only(top: 100.0),
-                child: Text(pairs == 0 ? 'Congrats, you won!' : 'Find $pairs pairs !', style: TextStyle(color: Color(0xff222f3e), fontSize: 25.0)),
+                child: Text(pairs == 0 ? 'Congrats, you won!' : ( pairs == 1 ? 'There\'s only one pari!' : 'Find $pairs pairs !'), style: TextStyle(color: Color(0xff222f3e), fontSize: 25.0)),
               ),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 18.0),
@@ -51,30 +52,33 @@ class GameState extends State<Game> {
                         setState(() {
                           widget.comparer.setCard(Cards.first, index);
                           widget.comparer.setCard(Cards.second, index);
-                          // widget.comparer.compare();
                         }); 
                       } else { 
+                        widget.comparer.cardFlips[widget.comparer.firstIndex] = true;
                         setState(() {
                           flip = false;
                           widget.comparer.setCard(Cards.second, index);
                           widget.comparer.compare();
                         });                   
                       }
-                      if(!widget.comparer.isEqual()) cardKey[widget.comparer.firstIndex].currentState.toggleCard();
-                      widget.comparer.setCard(Cards.first, index);  
+                      if(!widget.comparer.isEqual()) {
+                        cardKey[widget.comparer.firstIndex].currentState.toggleCard();
+                      }
+                      widget.comparer.changeFlip(true);
+                      widget.comparer.setCard(Cards.first, index);
                     },
-                    back: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(3.0)),
-                        color: Color(0xff222f3e),
-                      ),
-                      margin: EdgeInsets.all(3.0),  
-                    ),
                     front: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(3.0)),
-                        border: Border.all(color: Color(0xff01a3a4)),
-                        color: Color(0xff222f3e).withOpacity(.2),
+                        color: widget.background,
+                      ),
+                      margin: EdgeInsets.all(3.0),  
+                    ),
+                    back: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(3.0)),
+                        border: Border.all(color: widget.mainColor),
+                        color: widget.background.withOpacity(.2),
                       ),
                       margin: EdgeInsets.all(3.0),
                       child: Center(child: Text(widget.comparer.signs[index], style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600, color: Color(0xff01a3a4) ))),

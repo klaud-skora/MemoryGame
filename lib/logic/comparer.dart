@@ -53,20 +53,15 @@ class Comparer {
 
   int _first;
   int _second;
+  int pairs = Signs.values.length;
   List<String> signs = [];
   List<bool> cardFlips = [];
-
-  int get firstIndex => _first;
-  int get secondIndex => _second;
-
-
-  String get firstSign => _first == null ? '-' : signs[_first];
-  String get secondSign =>  _second == null ? '+' : signs[_second];
 
   setCard(Cards card, value) {
     switch(card) {
       case Cards.first:
-        _first = value;
+        _first = value; 
+        changeFlip(false);
         break;
       case Cards.second: 
         _second = value;
@@ -84,19 +79,27 @@ class Comparer {
     });
   }
 
-  String getSign(int index) {
-    return signs[index];
-  }
+  int get firstIndex => _first;
+  int get secondIndex => _second;
+
+  String get firstSign => _first == null ? '-' : signs[_first];
+  String get secondSign =>  _second == null ? '+' : signs[_second];
 
   bool isEqual() {
     return firstSign == secondSign;
   }
 
+  changeFlip(bool flip) {
+    cardFlips[firstIndex] = flip;
+  }
+
   compare() {
+    cardFlips[firstIndex] = true;
     if(isEqual()) { 
+      pairs--;
       cardFlips[firstIndex] = false;
       cardFlips[secondIndex] = false;
-    } 
+    }
   }
 }
 
