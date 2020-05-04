@@ -2,6 +2,7 @@ import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 
 import '../logic/comparer.dart';
+import '../logic/game_manager.dart';
 
 class Game extends StatefulWidget {
 
@@ -17,14 +18,18 @@ class Game extends StatefulWidget {
 class GameState extends State<Game> {
 
   List<GlobalKey<FlipCardState>> cardKey = [];
-  bool flip = false;
 
   @override
   Widget build(BuildContext context) { 
-    int pairs = widget.comparer.pairs;
     for(int i = 0; i < widget.comparer.signs.length; i++) {
       cardKey.add(GlobalKey<FlipCardState>());
     }
+    GameManager gameManager = GameManager();
+    gameManager.flip = false;
+    gameManager.comparer = widget.comparer;
+    gameManager.cardKeys = cardKey;
+    int pairs = widget.comparer.pairs;
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -47,25 +52,7 @@ class GameState extends State<Game> {
                     key: cardKey[index],
                     flipOnTouch: widget.comparer.cardFlips[index],
                     onFlip: () {
-                      if(!flip) {
-                        flip = true;
-                        setState(() {
-                          widget.comparer.setCard(Cards.first, index);
-                          widget.comparer.setCard(Cards.second, index);
-                        }); 
-                      } else { 
-                        widget.comparer.cardFlips[widget.comparer.firstIndex] = true;
-                        setState(() {
-                          flip = false;
-                          widget.comparer.setCard(Cards.second, index);
-                          widget.comparer.compare();
-                        });                   
-                      }
-                      if(!widget.comparer.isEqual()) {
-                        cardKey[widget.comparer.firstIndex].currentState.toggleCard();
-                      }
-                      widget.comparer.changeFlip(true);
-                      widget.comparer.setCard(Cards.first, index);
+                      gameManager.onFlip(index);
                     },
                     front: Container(
                       decoration: BoxDecoration(

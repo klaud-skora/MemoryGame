@@ -94,6 +94,7 @@ class Comparer {
   }
 
   compare() {
+    print('elo');
     cardFlips[firstIndex] = true;
     if(isEqual()) { 
       pairs--;
