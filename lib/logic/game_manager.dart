@@ -8,6 +8,8 @@ class GameManager {
   Comparer comparer;
   List cardKeys;
 
+  GameManager(this.flip, this.comparer, this.cardKeys);
+
   onFlip(index) {
     if(!flip) {
       flip = true;
