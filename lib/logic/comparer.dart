@@ -58,6 +58,7 @@ class Comparer {
   List<bool> cardFlips = [];
   List<int> matched = [];
   List<int> visible = [];
+  List<int> oneRound = [];
  
   setCard(Cards card, value) {
     switch(card) {
@@ -96,6 +97,14 @@ class Comparer {
 
   makeFlip(index) {
     cardFlips[index] = true;
+  }
+
+  setRound(index) {
+    oneRound.add(index);
+  }
+
+  resetRound() {
+    oneRound = [];
   }
 
   // compare() {

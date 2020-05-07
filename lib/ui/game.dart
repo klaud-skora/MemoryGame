@@ -45,15 +45,18 @@ class GameState extends State<Game> {
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 18.0),
                 alignment: Alignment(0.0, 0.0),
-                child: GridView.builder(
+                child: GestureDetector( 
+                  child: GridView.builder(
                   shrinkWrap: true,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 6,
                   ),
                   itemBuilder: (context, index) => FlipCard(
                     key: cardKey[index],
-                    flipOnTouch: widget.comparer.cardFlips[index],
-                    onFlip: () { flipCard(index); },
+                    flipOnTouch: widget.comparer.cardFlips[index] && widget.comparer.oneRound.length < 2,
+                    onFlip: () { 
+                      print( widget.comparer.oneRound.length);
+                      flipCard(index); },
                     front: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(3.0)),
@@ -73,7 +76,7 @@ class GameState extends State<Game> {
                   ),
                   itemCount: widget.comparer.signs.length,
                 ),
-              ),
+              ),)
             ],
           ),
         ),
