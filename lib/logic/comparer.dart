@@ -51,17 +51,18 @@ enum Cards {
 
 class Comparer {
 
-  int _first;
-  int _second;
+  int _first = -1;
+  int _second = -1;
   int pairs = Signs.values.length;
   List<String> signs = [];
   List<bool> cardFlips = [];
-
+  List<int> matched = [];
+  List<int> visible = [];
+ 
   setCard(Cards card, value) {
     switch(card) {
       case Cards.first:
         _first = value; 
-        changeFlip(false);
         break;
       case Cards.second: 
         _second = value;
@@ -82,25 +83,40 @@ class Comparer {
   int get firstIndex => _first;
   int get secondIndex => _second;
 
-  String get firstSign => _first == null ? '-' : signs[_first];
-  String get secondSign =>  _second == null ? '+' : signs[_second];
+  String get firstSign => _first == -1 ? '-' : signs[_first];
+  String get secondSign =>  _second == -1 ? '+' : signs[_second];
 
   bool isEqual() {
     return firstSign == secondSign;
   }
-
-  changeFlip(bool flip) {
-    cardFlips[firstIndex] = flip;
+  
+  noFlip(index) {
+    cardFlips[index] = false;
   }
 
-  compare() {
-    print('elo');
-    cardFlips[firstIndex] = true;
-    if(isEqual()) { 
-      pairs--;
-      cardFlips[firstIndex] = false;
-      cardFlips[secondIndex] = false;
-    }
+  makeFlip(index) {
+    cardFlips[index] = true;
   }
+
+  // compare() {
+  //   // if(secondIndex == -1) {
+  //   //   cardFlips[firstIndex] = false;
+  //   // }
+  //   // if(firstIndex != -1 && secondIndex != -1) {
+  //   //   if(firstSign == secondSign) {
+  //   //     cardFlips[secondIndex] = false;
+  //   //     setCard(Cards.first, -1);
+  //   //     setCard(Cards.second, -1);
+  //   //   } 
+  //     // else {
+  //     //   cardFlips[firstIndex] = true;
+  //     // }
+  //   }
+  //   // if(isEqual()) { 
+  //   //   pairs--;
+  //   //   cardFlips[firstIndex] = false;
+  //   //   cardFlips[secondIndex] = false;
+  //   // }
+  // }
 }
 

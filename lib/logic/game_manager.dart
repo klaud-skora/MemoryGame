@@ -4,27 +4,32 @@ import 'package:my_app/logic/comparer.dart';
 
 class GameManager {
 
-  bool flip;
   Comparer comparer;
   List cardKeys;
 
-  GameManager(this.flip, this.comparer, this.cardKeys);
+  GameManager(this.comparer, this.cardKeys);
+  int firstCard, secondCard;
+  bool flip = false;
 
   onFlip(index) {
-    if(!flip) {
+    if(comparer.firstIndex == -1) {
       flip = true;
-        comparer.setCard(Cards.first, index);
-        comparer.setCard(Cards.second, index);
-    } else { 
-      comparer.cardFlips[comparer.firstIndex] = true;
+      comparer.setCard(Cards.first, index);
+      comparer.noFlip(index);
+    } else {
       flip = false;
       comparer.setCard(Cards.second, index);
-      comparer.compare();
+      firstCard = comparer.firstIndex;
+      secondCard = index;
+      if(comparer.isEqual()) comparer.noFlip(index);
       if(!comparer.isEqual()) {
-        cardKeys[comparer.firstIndex].currentState.toggleCard();
+        comparer.makeFlip(comparer.firstIndex);
+        Future.delayed(Duration(milliseconds: 1000), () {
+          [comparer.firstIndex, comparer.secondIndex].forEach((f) => cardKeys[f].currentState.toggleCard());
+          comparer.setCard(Cards.first, -1);
+          comparer.setCard(Cards.second, -1);
+        });
       }
-      comparer.changeFlip(true);
-      comparer.setCard(Cards.first, index);
     }
   }
 }

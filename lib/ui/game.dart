@@ -24,11 +24,14 @@ class GameState extends State<Game> {
     for(int i = 0; i < widget.comparer.signs.length; i++) {
       cardKey.add(GlobalKey<FlipCardState>());
     }
-    GameManager gameManager = GameManager(false, widget.comparer, cardKey);
+    GameManager gameManager = GameManager(widget.comparer, cardKey);
     int pairs = widget.comparer.pairs;
     flipCard(index) {
-      gameManager.onFlip(index);
+      setState(() {
+        gameManager.onFlip(index);
+      });
     }
+   
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -50,9 +53,7 @@ class GameState extends State<Game> {
                   itemBuilder: (context, index) => FlipCard(
                     key: cardKey[index],
                     flipOnTouch: widget.comparer.cardFlips[index],
-                    onFlip: () {
-                      flipCard(index);
-                    },
+                    onFlip: () { flipCard(index); },
                     front: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(3.0)),
